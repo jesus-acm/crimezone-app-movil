@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:convert';
-import 'package:crimezone_app/global/enviroment.dart';
 import 'package:crimezone_app/models/crimen.dart';
 import 'package:crimezone_app/models/crimenes.dart';
 import 'package:csv/csv.dart';
@@ -75,11 +74,14 @@ class DbService {
   Future descargarDB() async {
     try {
       // final resp = await http.get('https://crime-zone.herokuapp.com/api/file');
-      // TODO: Sustituir por la url de la API en linea
       final peticiones = await Future.wait([
-        http.get('${ Enviroment.apiUrl }/file/${ this._dbPeaton }'),
-        http.get('${ Enviroment.apiUrl }/file/${ this._dbTransportePublico }')
+        http.get('https://crime-zone.herokuapp.com/api/file/${ this._dbPeaton }'),
+        http.get('https://crime-zone.herokuapp.com/api/file/${ this._dbTransportePublico }')
       ]);
+      // final peticiones = await Future.wait([
+      //   http.get('${ Enviroment.apiUrl }/file/${ this._dbPeaton }'),
+      //   http.get('${ Enviroment.apiUrl }/file/${ this._dbTransportePublico }')
+      // ]);
 
       this.crimenesPeaton.setCrimenes(transformarStringACrimenes(peticiones[0].body));
       this.crimenesTransporte.setCrimenes(transformarStringACrimenes(peticiones[1].body));
@@ -134,10 +136,8 @@ class DbService {
       final archivoVersiones = await _archivoLocal(this._dbVersiones);
       String contenido = await archivoVersiones.readAsString();
       
-      final resp = await http.post('${ Enviroment.apiUrl }/file/version', 
+      final resp = await http.post('https://crime-zone.herokuapp.com/api/file/version', 
         body: jsonDecode(contenido),
-      ).timeout(
-        Duration(seconds: 1), onTimeout: () => Future.error('No hay conexión.')
       );
 
       final respBody = jsonDecode(resp.body);

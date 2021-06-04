@@ -9,7 +9,7 @@ class EstadisticasCrimen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    
     final coloresTarjetas = <Color>[
       Colors.red,
       Colors.orange,
@@ -30,7 +30,7 @@ class EstadisticasCrimen extends StatelessWidget {
     }
 
     return Container(
-      height: size.height * 0.25,
+      height: 200,
       child: Column(
         children: [
           Flexible(

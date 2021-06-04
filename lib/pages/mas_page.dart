@@ -46,7 +46,6 @@ class _MasPageState extends State<MasPage> with WidgetsBindingObserver{
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              // height: size.height * 0.2,
               height: 150.0,
               child: Center(
                 child: FlutterLogo(size: 300),

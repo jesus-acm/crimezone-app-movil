@@ -58,7 +58,7 @@ class _MapaPageState extends State<MapaPage>{
 
     final cameraPosition = new CameraPosition(
       target: LatLng(19.501823, -99.149291),
-      zoom: 15
+      zoom: 15.5
     );
     
     if(stateUbicacion.existeUbicacion && stateUbicacion.siguiendo){
@@ -76,7 +76,6 @@ class _MapaPageState extends State<MapaPage>{
 
         final navegacionBarService = Provider.of<NavegacionBarService>(context);
         if(navegacionBarService.paginaActual != 1) return Container();
-        print('=====================> CREANDO MAPA');
 
         final mapaBloc = BlocProvider.of<MapaBloc>(context);
         
@@ -84,6 +83,7 @@ class _MapaPageState extends State<MapaPage>{
           myLocationEnabled: false,
           myLocationButtonEnabled: false,
           zoomControlsEnabled: false,
+          mapToolbarEnabled: false,
           initialCameraPosition: cameraPosition,
           onMapCreated: mapaBloc.initMapa,
           markers: state.marcadores.values.toSet(),

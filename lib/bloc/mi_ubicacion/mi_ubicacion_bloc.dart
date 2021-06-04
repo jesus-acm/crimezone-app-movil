@@ -17,6 +17,7 @@ class MiUbicacionBloc extends Bloc<MiUbicacionEvent, MiUbicacionState> {
 
   void iniciarSeguimiento({bool gps = false}){
     if(state.gpsActivo || gps){
+      print('==========> INICIANDO SEGUIMIENTO');
       this._positionSubscription = Geolocator.getPositionStream(
         desiredAccuracy: LocationAccuracy.high,
         distanceFilter: 20
@@ -46,7 +47,9 @@ class MiUbicacionBloc extends Bloc<MiUbicacionEvent, MiUbicacionState> {
   Stream<MiUbicacionState> mapEventToState(MiUbicacionEvent event) async* {
     
     if(event is OnVerificaGPS){
-      yield state.copyWith(gpsActivo: await this.verificaEstadoGPS());
+      final gps = await this.verificaEstadoGPS();
+      final ubicacionActual = gps ? state.existeUbicacion : false;
+      yield state.copyWith(gpsActivo: gps, existeUbicacion: ubicacionActual);
     }else if(event is OnGPSDesactivado){
       yield state.copyWith(gpsActivo: false, existeUbicacion: false);
     }else if(event is OnIniciarSeguimiento){

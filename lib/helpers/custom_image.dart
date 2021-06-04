@@ -17,21 +17,3 @@ Future<BitmapDescriptor> marcadorNaranja() async => await _marcador('assets/punt
 Future<BitmapDescriptor> marcadorVerde() async => await _marcador('assets/punto-verde.png');
 
 Future<BitmapDescriptor> marcadorUbicacion() async => await _marcador('assets/marcador.png');
-
-Future<Map<String,BitmapDescriptor>> mapaMarcadores() async{
-  final marcadores = await Future.wait([
-    marcadorUbicacion(),
-    marcadorRojo(),
-    marcadorNaranja(),
-    marcadorVerde()
-  ]);
-
-  Map<String,BitmapDescriptor> mapa = new Map();
-
-  mapa['marcador'] = marcadores[0];
-  mapa['Rojo'] = marcadores[1];
-  mapa['Naranja'] = marcadores[2];
-  mapa['Verde'] = marcadores[3];
-
-  return mapa;
-}

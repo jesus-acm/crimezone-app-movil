@@ -24,7 +24,16 @@ class InformePage extends StatelessWidget {
         slivers: [
           _opcionesCrimen(context),
           SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+            padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
+            sliver: SliverToBoxAdapter(
+              child: Text(
+                'Colonias con mayor índice delictivo registradas',
+                style: TextStyle(fontSize: 16.0, color: Colors.white, fontWeight: FontWeight.w600),
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0, top: 5.0),
             sliver: SliverToBoxAdapter(
               child: EstadisticasCrimen(informeService.crimenes),
             ),
@@ -64,7 +73,6 @@ class InformePage extends StatelessWidget {
               unselectedLabelColor: Colors.white,
               tabs: opciones.map((opcion) => Text('${ opcion }', style: Style.titulosStyle)).toList(),
               onTap: (index){
-                print(opciones[index]);
                 final informeService = Provider.of<InformeService>(context, listen: false);
                 informeService.cambiarTipo(opciones[index]);
               },
@@ -77,7 +85,7 @@ class InformePage extends StatelessWidget {
 
 
   _opcionesTiempo(BuildContext context){
-    final opcionesTiempo = ['Global', 'Ultimo mes'];
+    final opcionesTiempo = ['Global', 'Últimos 2 meses'];
 
     return SliverPadding(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -90,7 +98,6 @@ class InformePage extends StatelessWidget {
             unselectedLabelColor: Colors.white54,
             indicatorColor: Colors.transparent,
             onTap: (index){
-              print(opcionesTiempo[index]);
               final informeService = Provider.of<InformeService>(context, listen: false);
               informeService.opcionTiempo(opcionesTiempo[index]);
             },

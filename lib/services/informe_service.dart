@@ -4,6 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:simple_moment/simple_moment.dart';
 
 class InformeService with ChangeNotifier {
+
+  final int _divisionesGraficaUltimosMeses = 15;
+
   List<Crimen> _crimenes = DbService().crimenesPeaton.crimenesAntesUltimaFecha(anios: 3);
   String _tipo = 'Peatón';
   int _anios = 3;
@@ -25,7 +28,7 @@ class InformeService with ChangeNotifier {
       this._meses = 0;
       this._anios = 3;
     }else{
-      this._meses = 1;
+      this._meses = 2;
       this._anios = 0;
     }
     cambiarTipo(this._tipo);
@@ -34,7 +37,7 @@ class InformeService with ChangeNotifier {
 
   List<Crimen> get crimenes => this._crimenes;
 
-  String get opTiempo => (this._meses == 0) ? 'Global' : 'Ultimo mes';
+  String get opTiempo => (this._meses == 0) ? 'Global' : 'Últimos 2 meses';
 
 
   Map<String, int> _valoresGraficaGlobal(){
@@ -56,7 +59,7 @@ class InformeService with ChangeNotifier {
       ? DbService().crimenesPeaton.ultimaFecha
       : DbService().crimenesTransporte.ultimaFecha);
 
-    Moment primeraFecha = ultimaFechaDatos.subtract(months: 1);
+    Moment primeraFecha = ultimaFechaDatos.subtract(months: this._meses);
 
     while(ultimaFechaDatos.compareTo(primeraFecha.date) >= 0){
       listaFechas.add(primeraFecha.date);
@@ -92,7 +95,6 @@ class InformeService with ChangeNotifier {
   }
 
   Map<String, int> _valoresGraficaUltimoMes(){
-    const tamIntervalo = 7;
     Map<String, int> mapaDistribucion = new Map<String, int>();
     
     final distribucion = this._distribucionUltimoMes();
@@ -108,13 +110,13 @@ class InformeService with ChangeNotifier {
       if(aux == 0){
         total = distribucion[diaMes[i]];
         inicioFecha = diaMes[i];
-      }else if(aux < tamIntervalo){
+      }else if(aux < this._divisionesGraficaUltimosMeses){
         total = total + distribucion[diaMes[i]];
         finFecha = diaMes[i];
       }
       aux++;
 
-      if(aux == tamIntervalo){
+      if(aux == this._divisionesGraficaUltimosMeses){
         mapaDistribucion['     $inicioFecha  $finFecha'] = total;
         aux = 0;
         inicioFecha = '';

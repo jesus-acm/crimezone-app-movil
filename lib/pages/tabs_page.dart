@@ -1,4 +1,6 @@
 import 'package:crimezone_app/bloc/mapa/mapa_bloc.dart';
+import 'package:crimezone_app/global/enviroment.dart';
+import 'package:crimezone_app/services/db_service.dart';
 import 'package:crimezone_app/services/informe_service.dart';
 import 'package:crimezone_app/services/navegacion_bar_service.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,18 @@ class TabsPage extends StatefulWidget {
 class _TabsPageState extends State<TabsPage> {
   @override
   Widget build(BuildContext context) {
+    final dbService = new DbService();
+    final crimenesPeaton = dbService.crimenesPeaton;
+    final crimenesTransporte = dbService.crimenesTransporte;
+
+    final mapaBloc = BlocProvider.of<MapaBloc>(context);
+    mapaBloc.add(OnDbLista(
+      crimenesPeaton: crimenesPeaton.crimenesAntesUltimaFecha(
+          meses: Enviroment.mesesMapa, clustersRuido: false),
+      crimenesTransporte: crimenesTransporte.crimenesAntesUltimaFecha(
+          meses: Enviroment.mesesMapa, clustersRuido: false),
+    ));
+    
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: ( _ ) => InformeService()),

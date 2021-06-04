@@ -132,7 +132,7 @@ class MapaBloc extends Bloc<MapaEvent, MapaState> {
   }
 
   Stream<MapaState> _onNuevaUbicacion(OnNuevaUbicacion event) async*{
-    this.moverCamara(event.ubicacion);
+    await this.moverCamara(event.ubicacion);
 
     add(OnCargarMarkers(
       crimenesCercanosUbicacion(
@@ -179,8 +179,7 @@ class MapaBloc extends Bloc<MapaEvent, MapaState> {
         icon: icono,
         infoWindow: InfoWindow(
           title: '${ crimen.categoria }',
-          // snippet: 'Fecha: ${ crimen.fecha.toString() }'
-          snippet: 'Fecha: ${ crimen.color }'
+          snippet: 'Fecha: ${ crimen.fecha.toString().split(' ').first }'
         )
       );
       

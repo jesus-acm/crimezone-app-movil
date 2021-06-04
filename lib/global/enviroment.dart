@@ -1,7 +1,8 @@
-
-
 import 'dart:io';
 
 class Enviroment {
   static String apiUrl = Platform.isAndroid ? 'http://10.0.2.2:3000/api' : 'http://localhost:3000/api';
+  
+  // Configuracion
+  static int mesesMapa = 12;
 }

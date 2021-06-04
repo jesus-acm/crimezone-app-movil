@@ -3,7 +3,6 @@ import 'package:location/location.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:crimezone_app/bloc/mi_ubicacion/mi_ubicacion_bloc.dart';
-import 'package:crimezone_app/services/db_service.dart';
 import 'package:crimezone_app/bloc/mapa/mapa_bloc.dart';
 
 import 'package:crimezone_app/widgets/botones_categorias.dart';
@@ -11,17 +10,7 @@ import 'package:crimezone_app/widgets/botones_categorias.dart';
 class BotonesMapa extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final dbService = new DbService();
-    final crimenesPeaton = dbService.crimenesPeaton;
-    final crimenesTransporte = dbService.crimenesTransporte;
-
     final mapaBloc = BlocProvider.of<MapaBloc>(context);
-    mapaBloc.add(OnDbLista(
-      crimenesPeaton: crimenesPeaton.crimenesAntesUltimaFecha(
-          meses: 3, clustersRuido: false),
-      crimenesTransporte: crimenesTransporte.crimenesAntesUltimaFecha(
-          meses: 3, clustersRuido: false),
-    ));
 
     return BlocBuilder<MapaBloc, MapaState>(
       builder: ( _, state) {
@@ -49,6 +38,12 @@ class BotonesMapa extends StatelessWidget {
                     final mapaBloc = BlocProvider.of<MapaBloc>(context);
                     mapaBloc.add(OnDesactivarVisualizando());
                     mapaBloc.add(OnDesactivarManual());
+                    mapaBloc.add(OnBorrarMarkers());
+
+                    final miUbicacionBloc = BlocProvider.of<MiUbicacionBloc>(context);
+                    if(miUbicacionBloc.state.gpsActivo && miUbicacionBloc.state.existeUbicacion){
+                      mapaBloc.add(OnNuevaUbicacion(miUbicacionBloc.state.ubicacion));
+                    }
                   }),
               ),
               SizedBox(height: 10)
@@ -70,12 +65,16 @@ class BotonesMapa extends StatelessWidget {
                       final miUbicacionBloc = BlocProvider.of<MiUbicacionBloc>(context,listen: false);
                       if(miUbicacionBloc.state.existeUbicacion){
                         mapaBloc.add(OnOpcionPeaton(miUbicacionBloc.state.ubicacion));
+                      }else{
+                        mapaBloc.add(OnOpcionPeaton(null));
                       }
                     },
                     onPressedTransporte: () {
                       final miUbicacionBloc = BlocProvider.of<MiUbicacionBloc>(context,listen: false);
                       if(miUbicacionBloc.state.existeUbicacion){
                         mapaBloc.add(OnOpcionTransporte(miUbicacionBloc.state.ubicacion));
+                      }else{
+                        mapaBloc.add(OnOpcionTransporte(null));
                       }
                     },
                   ),
@@ -140,8 +139,7 @@ class BotonesMapa extends StatelessWidget {
                 icon: Icon(Icons.my_location,
                     color: state.siguiendo ? Colors.white : Colors.black87),
                 onPressed: () {
-                  final miUbicacionBloc =
-                      BlocProvider.of<MiUbicacionBloc>(context, listen: false);
+                  final miUbicacionBloc =BlocProvider.of<MiUbicacionBloc>(context, listen: false);
                   miUbicacionBloc.add(OnSeguirUbicacion());
                   if (!state.siguiendo) {
                     final mapaBloc = BlocProvider.of<MapaBloc>(context);
