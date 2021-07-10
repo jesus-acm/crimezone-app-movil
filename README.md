@@ -6,3 +6,5 @@ Aplicación móvil para Android con la funcionalidad para mostrar el índice del
 * Informe delictivo por categoría.
     * Último mes.
     * Últimos 3 años.
+
+[![Ve el video video](assets/captura_video.png)](https://www.youtube.com/watch?v=gg3bjiKkVn4​)
