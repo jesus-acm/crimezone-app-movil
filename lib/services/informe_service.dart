@@ -54,7 +54,7 @@ class InformeService with ChangeNotifier {
 
 
   List<DateTime> _mapaDiasUltimoMes(){
-    final listaFechas = new List<DateTime>();
+    final listaFechas = [];
     Moment ultimaFechaDatos = Moment.fromDate((this._tipo == 'Peatón')
       ? DbService().crimenesPeaton.ultimaFecha
       : DbService().crimenesTransporte.ultimaFecha);
