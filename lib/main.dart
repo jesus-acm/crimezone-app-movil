@@ -4,6 +4,7 @@ import 'package:crimezone_app/pages/loading_page.dart';
 import 'package:crimezone_app/services/db_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/services.dart';
 
 import 'package:crimezone_app/bloc/mapa/mapa_bloc.dart';
 
@@ -12,6 +13,10 @@ import 'package:crimezone_app/pages/tabs_page.dart';
 void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   
   final dbService = new DbService();
   final existeDb = await dbService.verficaDb;
